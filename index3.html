@@ -4,14 +4,14 @@
   <title>Alex's 3d model.js</title>
   <meta charset="utf-8">
 </head>
-<body style="margin: 0;">
+<body style="margin: 0; height:100%; width:100%">
   
   <script src="js/three.min.js"></script>
   <script src="js/OrbitControls.js"></script>
- <script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script>
+  <script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script>
   <script src='https://raw.githubusercontent.com/AlexOuyang/gest.js/master/src/gest.js'></script>
   <script src="js/gestControl.js"></script>
-
+  
   <script>
         container = document.createElement( 'div' );
         document.body.appendChild( container );
@@ -24,7 +24,7 @@
         info.style.color = '#0A9CF7'
         info.style.fontFamily = 'Monospace';
         info.style.fontWeight = 'bold';       
-        info.innerHTML = '"KV3 Model" : Download source code at <a href="https://github.com/AlexOuyang/Blender-exported-model-in-WebGL-using-Three.js" target="_blank" style = "color: white">Github</a>  - Created by <a href="" target="_blank" style = "color: white">Alex</a> - Model by <a href="" target="_blank" style = "color: white">Enoch</a><p>wave left or right to rotate the model, wave up or down to stop the rotation (only works in Chrome and Firefox)</P';
+        info.innerHTML = '<p>"Mind" : Download source code from <a href="https://github.com/AlexOuyang/Blender-exported-model-in-WebGL-using-Three.js" target="_blank" style = "color: white">Github</a>  - Created by <a href="https://www.facebook.com/chenxing.ouyang" target="_blank" style = "color: white">Alex</a></p><p>wave left or right to rotate the model, wave up or down to stop the rotation';
         container.appendChild( info );
 
     // Set up the scene, camera, and renderer as global variables.
@@ -38,8 +38,7 @@
 
       // Create the scene and set the scene size.
       scene = new THREE.Scene();
-	  scene.fog = new THREE.FogExp2( 0x000000, 0.1);
-
+	  scene.fog = new THREE.FogExp2( 0x000000, 0.05);
       var WIDTH = window.innerWidth,
           HEIGHT = window.innerHeight;
 
@@ -49,8 +48,8 @@
       document.body.appendChild(renderer.domElement);
 
       // Create a camera, zoom it out from the model a bit, and add it to the scene.
-      camera = new THREE.PerspectiveCamera(65, WIDTH / HEIGHT, 0.2, 20000);
-      camera.position.set(0,2,9);
+      camera = new THREE.PerspectiveCamera(40, WIDTH / HEIGHT, 0.1, 20000);
+      camera.position.set(5,0.9,-1.6);
       scene.add(camera);
 
       // Create an event listener that resizes the renderer with the browser window.
@@ -66,24 +65,28 @@
       renderer.setClearColorHex(0x333F47, 1);
 
       // Create a light, set its position, and add it to the scene.
-      var light = new THREE.PointLight(0xff0028);
-      light.position.set(50.0,50.0,50.0);
+      var light = new THREE.PointLight(0xffffff);
+      light.position.set(-10,20,10);
       scene.add(light);
-
+	  
       // Load in the mesh and add it to the scene.
       var loader = new THREE.JSONLoader();
-      loader.load( "models/KV3.js", function(geometry){
-		var material = new THREE.MeshLambertMaterial({color: 0xffd700,wireframe:true, wireframeLinewidth: 1.0});
+      loader.load( "models/FaceExport.js", addModelToScene);
+	  // loader helper function
+	  function addModelToScene(geometry, materials){
+		var material = new THREE.MeshLambertMaterial({color: 0xf0f8ff,wireframe:true, wireframeLinewidth: 1.0});
         mesh = new THREE.Mesh(geometry, material);
+		mesh.scale.set(1,1,1);
         scene.add(mesh);
-      });
+	  }
 
       // Add OrbitControls so that we can pan around with the mouse.
       controls = new THREE.OrbitControls(camera, renderer.domElement);
 
     }
 
-	//use for rotation of the model.
+
+    //use for rotation of the model.
 	var rotateSpeed = gestControl.rotateSpeed;
     // Renders the scene and updates the render as needed.
     function animate() {
@@ -97,9 +100,6 @@
       controls.update();
 
     }
-	
-	
-
   </script>
 
 
